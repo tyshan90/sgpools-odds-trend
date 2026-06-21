@@ -20,6 +20,7 @@ timestamp: 2026-06-21T08:30:00Z
 - `C:\Code\goalsbot\.env` was inspected only for variable names and can now be passed with `--env-file`; secret values were not copied into this repository.
 - CLI env-file smoke check succeeded with `latest "spain saudi"`.
 - Bot env-file smoke check loaded the token but could not reach Telegram from the sandbox; the app now reports a concise `NetworkError`.
+- `start.bat` and `stop.bat` were added and verified. Scraper-only lifecycle started PID `26248` and stopped it. Env-file lifecycle started scraper PID `14140` and bot PID `3116`, then stopped both.
 
 # Observed sample odds
 
@@ -32,8 +33,9 @@ timestamp: 2026-06-21T08:30:00Z
 # Near-term plan
 
 1. Set `TELEGRAM_BOT_TOKEN` from BotFather.
-2. Run `run_scraper_loop.bat` in one terminal to collect snapshots every 10 minutes.
-3. Run `run_bot.bat` in another terminal to answer `/odds` and `/change`.
+2. Set `SGPOOLS_ENV_FILE=C:\Code\goalsbot\.env` if reusing the existing env file.
+3. Run `start.bat` to collect snapshots and run the Telegram bot in the background.
+4. Run `stop.bat` to stop the background processes.
 4. Add more bet type mappings after `1X2` has collected enough history.
 5. Add chart image output after text replies are reliable.
 

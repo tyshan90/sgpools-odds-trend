@@ -72,6 +72,19 @@ Or double-click/run:
 .\run_scraper_loop.bat
 ```
 
+Or start the scraper loop and Telegram bot as background processes:
+
+```powershell
+$env:SGPOOLS_ENV_FILE="C:\Code\goalsbot\.env"
+.\start.bat
+```
+
+Stop background processes:
+
+```powershell
+.\stop.bat
+```
+
 ## Telegram Bot
 
 Run the bot in a separate terminal while the scraper loop is collecting data:

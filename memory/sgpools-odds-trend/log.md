@@ -2,6 +2,7 @@
 
 ## 2026-06-21
 
+* **Windows lifecycle**: Added `start.bat` and `stop.bat`; verified scraper-only start/stop, env-file scraper+bot start/stop, PID cleanup, and `10` passing tests.
 * **goalsbot env compatibility**: Added `--env-file` support, accepted both `LINKUP_API_KEY` and lowercase `linkup`, documented use of `C:\Code\goalsbot\.env`, updated `run_bot.bat` to honor `SGPOOLS_ENV_FILE`, and verified 10 passing tests plus a CLI env-file smoke check.
 * **Local MVP build**: Added the tested Python package `sgpools_trend` with response parsing, SQLite persistence, CLI import/scrape/latest/change commands, Playwright live scraping, Telegram bot scaffold, README, requirements, `.env.example`, and Windows helper scripts.
 * **Verification**: Created `.venv`, installed dependencies, installed Playwright Chromium, verified `run_tests.bat` with 7 passing tests, ran one live scrape from the public Singapore Pools sports page, inserted 72 rows, and confirmed `change "spain saudi"` reported Draw `8.00 -> 8.50` and Saudi Arabia `15.00 -> 19.00`.

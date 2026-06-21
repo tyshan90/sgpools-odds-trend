@@ -27,7 +27,9 @@ timestamp: 2026-06-21T08:30:00Z
 - A low-cost always-on deployment can use a small VPS, SQLite, Playwright, and a Telegram bot.
 - The implemented local MVP uses Python 3.11, Playwright, SQLite, `python-telegram-bot`, and `unittest`.
 - Runtime odds history is stored in `.runtime\odds.sqlite`, which is ignored by git.
-- Windows helper scripts are `run_tests.bat`, `run_scraper_loop.bat`, and `run_bot.bat`.
+- Windows helper scripts are `start.bat`, `stop.bat`, `run_tests.bat`, `run_scraper_loop.bat`, and `run_bot.bat`.
+- `start.bat` starts the scraper loop and, when `TELEGRAM_BOT_TOKEN` or `SGPOOLS_ENV_FILE` is configured, the Telegram bot. It writes PID/log files under `.runtime/`.
+- `stop.bat` stops only the recorded scraper/bot PIDs and removes their PID files.
 - The config loader accepts an optional `--env-file` path, including `C:\Code\goalsbot\.env`.
 - Config accepts both `LINKUP_API_KEY` and the lowercase `linkup` alias used by `goalsbot`; Linkup is available as configuration but is not used for Singapore Pools odds scraping.
 
@@ -51,6 +53,8 @@ timestamp: 2026-06-21T08:30:00Z
 | `python -m sgpools_trend.cli change "<match words>"` | Show latest odds movement against the previous snapshot. |
 | `python -m sgpools_trend.bot` | Run the Telegram bot once `TELEGRAM_BOT_TOKEN` is configured. |
 | `python -m sgpools_trend.bot --env-file C:\Code\goalsbot\.env` | Run the Telegram bot using the existing `goalsbot` env file. |
+| `start.bat` | Start background scraper loop and optional Telegram bot. |
+| `stop.bat` | Stop recorded background scraper/bot processes. |
 
 # Suggested snapshot fields
 
