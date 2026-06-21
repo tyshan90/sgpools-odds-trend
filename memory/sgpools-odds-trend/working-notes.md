@@ -21,6 +21,8 @@ timestamp: 2026-06-21T08:30:00Z
 - CLI env-file smoke check succeeded with `latest "spain saudi"`.
 - Bot env-file smoke check loaded the token but could not reach Telegram from the sandbox; the app now reports a concise `NetworkError`.
 - `start.bat` and `stop.bat` were added and verified. Scraper-only lifecycle started PID `26248` and stopped it. Env-file lifecycle started scraper PID `14140` and bot PID `3116`, then stopped both.
+- Dashboard was added and verified in Chrome at `http://127.0.0.1:8765`. Browser network requests returned `/`, `/app.css`, `/app.js`, `/api/matches`, `/api/trend`, and `/favicon.ico` successfully, with no console messages.
+- The dashboard verification screenshot was written to `.runtime\dashboard-verify.png`.
 
 # Observed sample odds
 
@@ -34,7 +36,7 @@ timestamp: 2026-06-21T08:30:00Z
 
 1. Set `TELEGRAM_BOT_TOKEN` from BotFather.
 2. Set `SGPOOLS_ENV_FILE=C:\Code\goalsbot\.env` if reusing the existing env file.
-3. Run `start.bat` to collect snapshots and run the Telegram bot in the background.
+3. Run `start.bat` to collect snapshots, run the dashboard, and run the Telegram bot in the background.
 4. Run `stop.bat` to stop the background processes.
 4. Add more bet type mappings after `1X2` has collected enough history.
 5. Add chart image output after text replies are reliable.
@@ -52,3 +54,4 @@ timestamp: 2026-06-21T08:30:00Z
 - Whether live odds use the same response shape or a separate live/event stream.
 - Whether polling every 10 to 15 minutes is enough for the intended personal use.
 - Whether Linkup has a useful role later for discovery/docs; current odds collection still requires Playwright because Singapore Pools loads odds dynamically.
+- Whether the dashboard should add other bet types after mapping their Singapore Pools market codes.

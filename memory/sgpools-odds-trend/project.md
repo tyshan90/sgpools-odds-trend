@@ -30,6 +30,9 @@ timestamp: 2026-06-21T08:30:00Z
 - Windows helper scripts are `start.bat`, `stop.bat`, `run_tests.bat`, `run_scraper_loop.bat`, and `run_bot.bat`.
 - `start.bat` starts the scraper loop and, when `TELEGRAM_BOT_TOKEN` or `SGPOOLS_ENV_FILE` is configured, the Telegram bot. It writes PID/log files under `.runtime/`.
 - `stop.bat` stops only the recorded scraper/bot PIDs and removes their PID files.
+- The local dashboard runs at `http://127.0.0.1:8765` by default.
+- The default snapshot interval is 10 minutes. Override with `SGPOOLS_SCRAPE_INTERVAL_MINUTES`.
+- The dashboard port can be overridden with `SGPOOLS_DASHBOARD_PORT`.
 - The config loader accepts an optional `--env-file` path, including `C:\Code\goalsbot\.env`.
 - Config accepts both `LINKUP_API_KEY` and the lowercase `linkup` alias used by `goalsbot`; Linkup is available as configuration but is not used for Singapore Pools odds scraping.
 
@@ -55,6 +58,7 @@ timestamp: 2026-06-21T08:30:00Z
 | `python -m sgpools_trend.bot --env-file C:\Code\goalsbot\.env` | Run the Telegram bot using the existing `goalsbot` env file. |
 | `start.bat` | Start background scraper loop and optional Telegram bot. |
 | `stop.bat` | Stop recorded background scraper/bot processes. |
+| `run_dashboard.bat` | Run only the local dashboard in the foreground. |
 
 # Suggested snapshot fields
 
@@ -81,6 +85,12 @@ timestamp: 2026-06-21T08:30:00Z
 - Change calculations should support latest vs previous snapshot, latest vs opening snapshot, and latest vs a time window such as 1 hour ago.
 - Replies should include the last snapshot time so users know freshness.
 - Chart output can be generated later with matplotlib or Plotly from stored snapshots.
+
+# Dashboard behavior
+
+- The dashboard lists stored matches, supports match search, and renders `1X2` trend lines for Home, Draw, and Away selections.
+- The chart is implemented with local vanilla JavaScript and inline SVG; it does not depend on external CDN assets.
+- Dashboard APIs are `GET /api/matches?market=1X2` and `GET /api/trend?event_id=<id>&market=1X2`.
 
 # Memory policy
 

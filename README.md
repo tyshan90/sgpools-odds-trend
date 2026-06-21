@@ -72,11 +72,35 @@ Or double-click/run:
 .\run_scraper_loop.bat
 ```
 
-Or start the scraper loop and Telegram bot as background processes:
+Run only the dashboard:
+
+```powershell
+.\run_dashboard.bat
+```
+
+Open:
+
+```text
+http://127.0.0.1:8765
+```
+
+Or start the scraper loop, dashboard, and Telegram bot as background processes:
 
 ```powershell
 $env:SGPOOLS_ENV_FILE="C:\Code\goalsbot\.env"
 .\start.bat
+```
+
+The default snapshot interval is 10 minutes. Override it with:
+
+```powershell
+$env:SGPOOLS_SCRAPE_INTERVAL_MINUTES="5"
+```
+
+The default dashboard port is `8765`. Override it with:
+
+```powershell
+$env:SGPOOLS_DASHBOARD_PORT="8770"
 ```
 
 Stop background processes:

@@ -104,6 +104,91 @@ class OddsStore:
 
         return changes
 
+    def list_matches(self, market_name: str | None = "1X2") -> list[dict[str, object]]:
+        where = "WHERE market_name = ?" if market_name else ""
+        params = [market_name] if market_name else []
+        with self._connect() as conn:
+            rows = conn.execute(
+                f"""
+                SELECT
+                    event_id,
+                    event_code,
+                    event_name,
+                    start_time,
+                    competition,
+                    category,
+                    market_name,
+                    COUNT(DISTINCT captured_at) AS snapshot_count,
+                    MIN(captured_at) AS first_captured_at,
+                    MAX(captured_at) AS latest_captured_at
+                FROM odds_snapshots
+                {where}
+                GROUP BY event_id, market_name
+                ORDER BY start_time, event_name
+                """,
+                params,
+            ).fetchall()
+        return [dict(row) for row in rows]
+
+    def trend_for_event(self, event_id: str, market_name: str | None = "1X2") -> dict[str, object]:
+        clauses = ["event_id = ?"]
+        params: list[str] = [event_id]
+        if market_name:
+            clauses.append("market_name = ?")
+            params.append(market_name)
+        where = " AND ".join(clauses)
+
+        with self._connect() as conn:
+            rows = conn.execute(
+                f"""
+                SELECT * FROM odds_snapshots
+                WHERE {where}
+                ORDER BY
+                    CASE selection_code
+                        WHEN 'H' THEN 1
+                        WHEN 'D' THEN 2
+                        WHEN 'A' THEN 3
+                        ELSE 9
+                    END,
+                    selection_name,
+                    captured_at
+                """,
+                params,
+            ).fetchall()
+
+        if not rows:
+            return {"event_id": event_id, "event_name": "", "market_name": market_name or "", "series": []}
+
+        first = self._from_sql_row(rows[0])
+        grouped: dict[str, dict[str, object]] = {}
+        for sql_row in rows:
+            row = self._from_sql_row(sql_row)
+            key = row.outcome_id
+            if key not in grouped:
+                grouped[key] = {
+                    "outcome_id": row.outcome_id,
+                    "selection_code": row.selection_code,
+                    "selection_name": row.selection_name,
+                    "points": [],
+                }
+            grouped[key]["points"].append(
+                {
+                    "captured_at": row.captured_at,
+                    "decimal_odds": row.decimal_odds,
+                }
+            )
+
+        return {
+            "event_id": first.event_id,
+            "event_name": first.event_name,
+            "event_code": first.event_code,
+            "start_time": first.start_time,
+            "competition": first.competition,
+            "category": first.category,
+            "market_name": first.market_name,
+            "series": list(grouped.values()),
+        }
+
     def _init_schema(self) -> None:
         with self._connect() as conn:
             conn.execute(

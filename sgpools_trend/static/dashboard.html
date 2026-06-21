@@ -1,0 +1,52 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Singapore Pools Odds Trend</title>
+    <link rel="stylesheet" href="/app.css">
+  </head>
+  <body>
+    <header class="topbar">
+      <div>
+        <h1>Singapore Pools Odds Trend</h1>
+        <p id="updatedText">Waiting for stored snapshots</p>
+      </div>
+      <div class="controls">
+        <label for="marketSelect">Market</label>
+        <select id="marketSelect">
+          <option value="1X2">1X2</option>
+        </select>
+        <button id="refreshButton" type="button">Refresh</button>
+      </div>
+    </header>
+
+    <main class="layout">
+      <aside class="match-panel" aria-label="Matches">
+        <div class="search-block">
+          <label for="matchSearch">Search match</label>
+          <input id="matchSearch" type="search" placeholder="Spain, Belgium, England">
+        </div>
+        <div id="matchList" class="match-list" role="list"></div>
+      </aside>
+
+      <section class="trend-panel" aria-live="polite">
+        <div class="trend-header">
+          <div>
+            <p id="competitionText" class="eyebrow">Select a match</p>
+            <h2 id="matchTitle">No match selected</h2>
+          </div>
+          <div id="snapshotCount" class="snapshot-pill">0 snapshots</div>
+        </div>
+
+        <div id="summaryGrid" class="summary-grid"></div>
+        <div class="chart-shell">
+          <svg id="trendChart" role="img" aria-label="Odds trend chart"></svg>
+        </div>
+        <div id="legend" class="legend"></div>
+      </section>
+    </main>
+
+    <script src="/app.js"></script>
+  </body>
+</html>

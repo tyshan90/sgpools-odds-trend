@@ -94,6 +94,47 @@ class StoreTests(unittest.TestCase):
             self.assertEqual(changes[0].latest_odds, 1.08)
             self.assertEqual(changes[0].absolute_change, 0.03)
 
+    def test_store_lists_match_summaries_for_dashboard(self):
+        from tempfile import TemporaryDirectory
+
+        with TemporaryDirectory() as tmp_dir:
+            store = OddsStore(f"{tmp_dir}/odds.sqlite")
+            store.insert_rows(
+                [
+                    make_selection("2026-06-21T08:10:00Z", "H", "Spain", "home", 1.05),
+                    make_selection("2026-06-21T08:20:00Z", "H", "Spain", "home", 1.08),
+                ]
+            )
+
+            matches = store.list_matches()
+
+            self.assertEqual(len(matches), 1)
+            self.assertEqual(matches[0]["event_id"], "140085")
+            self.assertEqual(matches[0]["event_name"], "Spain vs Saudi Arabia")
+            self.assertEqual(matches[0]["snapshot_count"], 2)
+            self.assertEqual(matches[0]["latest_captured_at"], "2026-06-21T08:20:00Z")
+
+    def test_store_returns_trend_series_for_match(self):
+        from tempfile import TemporaryDirectory
+
+        with TemporaryDirectory() as tmp_dir:
+            store = OddsStore(f"{tmp_dir}/odds.sqlite")
+            store.insert_rows(
+                [
+                    make_selection("2026-06-21T08:10:00Z", "H", "Spain", "home", 1.05),
+                    make_selection("2026-06-21T08:10:00Z", "D", "Draw", "draw", 8.0),
+                    make_selection("2026-06-21T08:20:00Z", "H", "Spain", "home", 1.08),
+                    make_selection("2026-06-21T08:20:00Z", "D", "Draw", "draw", 8.5),
+                ]
+            )
+
+            trend = store.trend_for_event("140085", market_name="1X2")
+
+            self.assertEqual(trend["event_name"], "Spain vs Saudi Arabia")
+            self.assertEqual(trend["market_name"], "1X2")
+            self.assertEqual([series["selection_name"] for series in trend["series"]], ["Spain", "Draw"])
+            self.assertEqual(trend["series"][0]["points"][1]["decimal_odds"], 1.08)
+
 
 if __name__ == "__main__":
     unittest.main()
