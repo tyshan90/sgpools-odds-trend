@@ -150,8 +150,8 @@ function drawChart(seriesList) {
       addCircle(xScale(Date.parse(point.captured_at)), yScale(point.decimal_odds), color);
     }
   }
-  addText(margin.left, height - 14, new Date(minTime).toLocaleString(), "start", "axis-label");
-  addText(width - margin.right, height - 14, new Date(maxTime).toLocaleString(), "end", "axis-label");
+  addTimeDateLabel(margin.left, height - 28, new Date(minTime), "start");
+  addTimeDateLabel(width - margin.right, height - 28, new Date(maxTime), "end");
 }
 
 function addGrid(width, height, margin, yMin, yMax, yScale) {
@@ -223,6 +223,28 @@ function addText(x, y, text, anchor, className) {
   node.setAttribute("text-anchor", anchor);
   node.setAttribute("class", className);
   node.textContent = text;
+  el.chart.appendChild(node);
+}
+
+function addTimeDateLabel(x, y, date, anchor) {
+  const node = document.createElementNS("http://www.w3.org/2000/svg", "text");
+  node.setAttribute("x", x.toFixed(2));
+  node.setAttribute("y", y.toFixed(2));
+  node.setAttribute("text-anchor", anchor);
+  node.setAttribute("class", "axis-label");
+
+  const timeLine = document.createElementNS("http://www.w3.org/2000/svg", "tspan");
+  timeLine.setAttribute("x", x.toFixed(2));
+  timeLine.setAttribute("dy", "0");
+  timeLine.textContent = date.toLocaleTimeString([], { hour: "2-digit", minute: "2-digit" });
+
+  const dateLine = document.createElementNS("http://www.w3.org/2000/svg", "tspan");
+  dateLine.setAttribute("x", x.toFixed(2));
+  dateLine.setAttribute("dy", "1.2em");
+  dateLine.textContent = date.toLocaleDateString([], { month: "short", day: "numeric" });
+
+  node.appendChild(timeLine);
+  node.appendChild(dateLine);
   el.chart.appendChild(node);
 }
 
