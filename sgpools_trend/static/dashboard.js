@@ -4,7 +4,7 @@ const state = {
   market: "1X2",
 };
 
-const colors = ["#146c5a", "#0f5f9c", "#b54708", "#6f5aa7", "#59636f"];
+const colors = ["#2fb386", "#58a6ff", "#f59e0b", "#c084fc", "#94a3b8"];
 
 const el = {
   marketSelect: document.querySelector("#marketSelect"),
@@ -158,11 +158,11 @@ function addGrid(width, height, margin, yMin, yMax, yScale) {
   for (let i = 0; i <= 4; i += 1) {
     const value = yMin + ((yMax - yMin) * i) / 4;
     const y = yScale(value);
-    addLine(margin.left, y, width - margin.right, y, "#e3e8ed");
+    addLine(margin.left, y, width - margin.right, y, "#2c3440");
     addText(margin.left - 10, y + 4, value.toFixed(2), "end", "axis-label");
   }
-  addLine(margin.left, margin.top, margin.left, height - margin.bottom, "#b7c1cc");
-  addLine(margin.left, height - margin.bottom, width - margin.right, height - margin.bottom, "#b7c1cc");
+  addLine(margin.left, margin.top, margin.left, height - margin.bottom, "#566274");
+  addLine(margin.left, height - margin.bottom, width - margin.right, height - margin.bottom, "#566274");
 }
 
 function renderLegend(seriesList) {

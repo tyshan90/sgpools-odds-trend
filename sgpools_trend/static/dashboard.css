@@ -1,16 +1,16 @@
 :root {
-  color-scheme: light;
-  --bg: #f6f7f9;
-  --surface: #ffffff;
-  --surface-2: #eef2f5;
-  --text: #18202a;
-  --muted: #64717f;
-  --border: #d9e0e7;
-  --accent: #146c5a;
-  --accent-2: #0f5f9c;
-  --down: #b54708;
-  --up: #2459a6;
-  --focus: #111827;
+  color-scheme: dark;
+  --bg: #0e1116;
+  --surface: #171c24;
+  --surface-2: #222936;
+  --text: #edf2f7;
+  --muted: #9aa8b7;
+  --border: #303947;
+  --accent: #2fb386;
+  --accent-2: #58a6ff;
+  --down: #f59e0b;
+  --up: #7dd3fc;
+  --focus: #c8d7e8;
 }
 
 * {
@@ -91,7 +91,7 @@ select {
 button {
   padding: 0 0.9rem;
   background: var(--accent);
-  color: #ffffff;
+  color: #06110d;
   border-color: var(--accent);
   font-weight: 650;
   cursor: pointer;
@@ -101,7 +101,7 @@ button:focus-visible,
 input:focus-visible,
 select:focus-visible,
 .match-item:focus-visible {
-  outline: 3px solid rgba(17, 24, 39, 0.25);
+  outline: 3px solid rgba(200, 215, 232, 0.35);
   outline-offset: 2px;
 }
 
