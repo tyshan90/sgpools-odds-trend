@@ -103,12 +103,13 @@ function renderSummary(seriesList) {
     const first = series.points[0];
     const last = series.points[series.points.length - 1];
     const change = first && last ? last.decimal_odds - first.decimal_odds : 0;
+    const percentChange = first?.decimal_odds ? (change / first.decimal_odds) * 100 : 0;
     const metric = document.createElement("div");
     metric.className = "metric";
     metric.innerHTML = `
       <div class="metric-label">${escapeHtml(series.selection_name)}</div>
       <div class="metric-value">${formatOdds(last?.decimal_odds)}</div>
-      <div class="metric-change">${formatSigned(change)} from first snapshot</div>
+      <div class="metric-change">${formatSignedPercent(percentChange)} from first snapshot</div>
     `;
     el.summaryGrid.appendChild(metric);
   }
@@ -240,6 +241,10 @@ function formatOdds(value) {
 
 function formatSigned(value) {
   return `${value >= 0 ? "+" : ""}${value.toFixed(2)}`;
+}
+
+function formatSignedPercent(value) {
+  return `${value >= 0 ? "+" : ""}${value.toFixed(2)}%`;
 }
 
 function escapeHtml(value) {
