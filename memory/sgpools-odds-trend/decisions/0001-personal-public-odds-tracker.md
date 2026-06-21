@@ -21,7 +21,7 @@ Build the first version as a personal-use tracker that captures publicly visible
 # Guardrails
 
 - Do not implement login, account access, betting actions, CAPTCHA bypass, or session-token reuse.
-- Use conservative polling, initially every 10 to 15 minutes.
+- Use conservative polling, initially every 60 minutes by default.
 - Treat internal endpoints as unstable and private implementation details.
 - Keep collected data limited to odds and event metadata needed for trend analysis.
 

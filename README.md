@@ -60,10 +60,10 @@ Run one live scrape:
 python -m sgpools_trend.cli scrape
 ```
 
-Run continuously every 10 minutes:
+Run continuously every hour:
 
 ```powershell
-python -m sgpools_trend.cli scrape-loop --interval-minutes 10
+python -m sgpools_trend.cli scrape-loop --interval-minutes 60
 ```
 
 Or double-click/run:
@@ -91,10 +91,10 @@ $env:SGPOOLS_ENV_FILE="C:\Code\goalsbot\.env"
 .\start.bat
 ```
 
-The default snapshot interval is 10 minutes. Override it with:
+The default snapshot interval is 60 minutes. Override it with:
 
 ```powershell
-$env:SGPOOLS_SCRAPE_INTERVAL_MINUTES="5"
+$env:SGPOOLS_SCRAPE_INTERVAL_MINUTES="30"
 ```
 
 The default dashboard port is `8765`. Override it with:

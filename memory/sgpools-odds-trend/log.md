@@ -2,6 +2,7 @@
 
 ## 2026-06-21
 
+* **Snapshot interval**: Changed the default scraper interval from 10 minutes to 60 minutes while keeping `SGPOOLS_SCRAPE_INTERVAL_MINUTES` as the override, and moved `start.bat` process creation into `scripts/start.ps1` after verifying the Windows lifecycle smoke test.
 * **Dashboard**: Added a local dashboard server, JSON APIs, vanilla JS/SVG frontend, match search, trend chart, summary metrics, `run_dashboard.bat`, lifecycle integration, configurable scrape interval/port, Chrome verification, and 12 passing tests.
 * **Windows lifecycle**: Added `start.bat` and `stop.bat`; verified scraper-only start/stop, env-file scraper+bot start/stop, PID cleanup, and `10` passing tests.
 * **goalsbot env compatibility**: Added `--env-file` support, accepted both `LINKUP_API_KEY` and lowercase `linkup`, documented use of `C:\Code\goalsbot\.env`, updated `run_bot.bat` to honor `SGPOOLS_ENV_FILE`, and verified 10 passing tests plus a CLI env-file smoke check.

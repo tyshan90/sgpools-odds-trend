@@ -52,6 +52,6 @@ timestamp: 2026-06-21T08:30:00Z
 - Whether the internal response includes all desired bet types or only the selected market.
 - Whether opening odds are exposed in a separate page/endpoint or need to be approximated by the first collected snapshot.
 - Whether live odds use the same response shape or a separate live/event stream.
-- Whether polling every 10 to 15 minutes is enough for the intended personal use.
+- Whether hourly polling is enough for the intended personal use.
 - Whether Linkup has a useful role later for discovery/docs; current odds collection still requires Playwright because Singapore Pools loads odds dynamically.
 - Whether the dashboard should add other bet types after mapping their Singapore Pools market codes.

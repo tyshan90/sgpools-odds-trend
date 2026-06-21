@@ -31,14 +31,14 @@ timestamp: 2026-06-21T08:30:00Z
 - `start.bat` starts the scraper loop and, when `TELEGRAM_BOT_TOKEN` or `SGPOOLS_ENV_FILE` is configured, the Telegram bot. It writes PID/log files under `.runtime/`.
 - `stop.bat` stops only the recorded scraper/bot PIDs and removes their PID files.
 - The local dashboard runs at `http://127.0.0.1:8765` by default.
-- The default snapshot interval is 10 minutes. Override with `SGPOOLS_SCRAPE_INTERVAL_MINUTES`.
+- The default snapshot interval is 60 minutes. Override with `SGPOOLS_SCRAPE_INTERVAL_MINUTES`.
 - The dashboard port can be overridden with `SGPOOLS_DASHBOARD_PORT`.
 - The config loader accepts an optional `--env-file` path, including `C:\Code\goalsbot\.env`.
 - Config accepts both `LINKUP_API_KEY` and the lowercase `linkup` alias used by `goalsbot`; Linkup is available as configuration but is not used for Singapore Pools odds scraping.
 
 # Target MVP
 
-1. Run a Playwright scraper every 10 to 15 minutes.
+1. Run a Playwright scraper every 60 minutes by default.
 2. Load the public Singapore Pools sports page and let the site complete normal public preauth.
 3. Capture football odds snapshots for `1X2` first.
 4. Store snapshots in SQLite.
@@ -51,7 +51,7 @@ timestamp: 2026-06-21T08:30:00Z
 |---|---|
 | `python -m sgpools_trend.cli import-file <path>` | Import a saved Singapore Pools JSON response. |
 | `python -m sgpools_trend.cli scrape` | Run one live Playwright scrape. |
-| `python -m sgpools_trend.cli scrape-loop --interval-minutes 10` | Collect snapshots continuously. |
+| `python -m sgpools_trend.cli scrape-loop --interval-minutes 60` | Collect snapshots continuously. |
 | `python -m sgpools_trend.cli latest "<match words>"` | Show the latest stored odds. |
 | `python -m sgpools_trend.cli change "<match words>"` | Show latest odds movement against the previous snapshot. |
 | `python -m sgpools_trend.bot` | Run the Telegram bot once `TELEGRAM_BOT_TOKEN` is configured. |
