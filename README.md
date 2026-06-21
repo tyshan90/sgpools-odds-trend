@@ -21,6 +21,17 @@ For Telegram, create a bot with BotFather and set:
 $env:TELEGRAM_BOT_TOKEN="your-token"
 ```
 
+You can also reuse an existing env file, for example:
+
+```powershell
+python -m sgpools_trend.bot --env-file C:\Code\goalsbot\.env
+python -m sgpools_trend.cli --env-file C:\Code\goalsbot\.env latest "spain saudi"
+```
+
+The config loader accepts both `LINKUP_API_KEY` and the lowercase `linkup`
+alias used by `goalsbot`. The current odds scraper still uses Playwright
+because Singapore Pools loads odds through a browser-side flow.
+
 ## Local Smoke Test
 
 Import the saved sample response:
@@ -67,6 +78,19 @@ Run the bot in a separate terminal while the scraper loop is collecting data:
 
 ```powershell
 python -m sgpools_trend.bot
+```
+
+With the existing `goalsbot` env file:
+
+```powershell
+python -m sgpools_trend.bot --env-file C:\Code\goalsbot\.env
+```
+
+Or with the batch file:
+
+```powershell
+$env:SGPOOLS_ENV_FILE="C:\Code\goalsbot\.env"
+.\run_bot.bat
 ```
 
 Or double-click/run:

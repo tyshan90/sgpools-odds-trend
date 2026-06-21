@@ -17,6 +17,9 @@ timestamp: 2026-06-21T08:30:00Z
 - Playwright Chromium has been installed for live scraping.
 - The live scraper was verified on 2026-06-21 and inserted 72 current odds rows into `.runtime\odds.sqlite`.
 - Unit tests pass through `run_tests.bat`.
+- `C:\Code\goalsbot\.env` was inspected only for variable names and can now be passed with `--env-file`; secret values were not copied into this repository.
+- CLI env-file smoke check succeeded with `latest "spain saudi"`.
+- Bot env-file smoke check loaded the token but could not reach Telegram from the sandbox; the app now reports a concise `NetworkError`.
 
 # Observed sample odds
 
@@ -46,3 +49,4 @@ timestamp: 2026-06-21T08:30:00Z
 - Whether opening odds are exposed in a separate page/endpoint or need to be approximated by the first collected snapshot.
 - Whether live odds use the same response shape or a separate live/event stream.
 - Whether polling every 10 to 15 minutes is enough for the intended personal use.
+- Whether Linkup has a useful role later for discovery/docs; current odds collection still requires Playwright because Singapore Pools loads odds dynamically.

@@ -28,6 +28,8 @@ timestamp: 2026-06-21T08:30:00Z
 - The implemented local MVP uses Python 3.11, Playwright, SQLite, `python-telegram-bot`, and `unittest`.
 - Runtime odds history is stored in `.runtime\odds.sqlite`, which is ignored by git.
 - Windows helper scripts are `run_tests.bat`, `run_scraper_loop.bat`, and `run_bot.bat`.
+- The config loader accepts an optional `--env-file` path, including `C:\Code\goalsbot\.env`.
+- Config accepts both `LINKUP_API_KEY` and the lowercase `linkup` alias used by `goalsbot`; Linkup is available as configuration but is not used for Singapore Pools odds scraping.
 
 # Target MVP
 
@@ -48,6 +50,7 @@ timestamp: 2026-06-21T08:30:00Z
 | `python -m sgpools_trend.cli latest "<match words>"` | Show the latest stored odds. |
 | `python -m sgpools_trend.cli change "<match words>"` | Show latest odds movement against the previous snapshot. |
 | `python -m sgpools_trend.bot` | Run the Telegram bot once `TELEGRAM_BOT_TOKEN` is configured. |
+| `python -m sgpools_trend.bot --env-file C:\Code\goalsbot\.env` | Run the Telegram bot using the existing `goalsbot` env file. |
 
 # Suggested snapshot fields
 

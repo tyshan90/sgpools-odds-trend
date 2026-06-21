@@ -5,6 +5,7 @@ import json
 import time
 from pathlib import Path
 
+from .config import load_settings
 from .formatting import format_changes, format_latest
 from .parser import parse_upcoming_football
 from .scraper import SPORTS_URL, now_utc, scrape_upcoming_football_sync
@@ -16,14 +17,15 @@ DEFAULT_DB = Path(".runtime") / "odds.sqlite"
 def main(argv: list[str] | None = None) -> int:
     parser = build_parser()
     args = parser.parse_args(argv)
-    store = OddsStore(args.db)
+    settings = load_settings(args.env_file, {"DATABASE_PATH": str(args.db) if args.db else None})
+    store = OddsStore(settings.database_path)
 
     if args.command == "import-file":
         payload = json.loads(Path(args.path).read_text(encoding="utf-8"))
         captured_at = args.captured_at or now_utc()
         rows = parse_upcoming_football(payload, captured_at=captured_at, source_url=str(args.path))
         inserted = store.insert_rows(rows)
-        print(f"Imported {inserted} new odds rows into {args.db}")
+        print(f"Imported {inserted} new odds rows into {settings.database_path}")
         return 0
 
     if args.command == "scrape":
@@ -34,12 +36,12 @@ def main(argv: list[str] | None = None) -> int:
             return 1
         inserted = store.insert_rows(rows)
         print(f"Scraped {len(rows)} odds rows from {SPORTS_URL}")
-        print(f"Inserted {inserted} new rows into {args.db}")
+        print(f"Inserted {inserted} new rows into {settings.database_path}")
         return 0
 
     if args.command == "scrape-loop":
         interval_seconds = args.interval_minutes * 60
-        print(f"Starting scraper loop. Interval: {args.interval_minutes} minutes. DB: {args.db}")
+        print(f"Starting scraper loop. Interval: {args.interval_minutes} minutes. DB: {settings.database_path}")
         while True:
             try:
                 rows = scrape_upcoming_football_sync(headless=not args.headful, timeout_ms=args.timeout_ms)
@@ -68,7 +70,8 @@ def main(argv: list[str] | None = None) -> int:
 
 def build_parser() -> argparse.ArgumentParser:
     parser = argparse.ArgumentParser(description="Personal Singapore Pools football odds trend tracker")
-    parser.add_argument("--db", default=DEFAULT_DB, type=Path, help=f"SQLite database path. Default: {DEFAULT_DB}")
+    parser.add_argument("--db", default=None, type=Path, help=f"SQLite database path. Default: {DEFAULT_DB}")
+    parser.add_argument("--env-file", type=Path, help="Optional .env file to load, e.g. C:\\Code\\goalsbot\\.env")
 
     subparsers = parser.add_subparsers(dest="command", required=True)
 

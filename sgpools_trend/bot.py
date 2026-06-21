@@ -1,21 +1,30 @@
 from __future__ import annotations
 
 import argparse
-import os
+import logging
 from pathlib import Path
 
 from .cli import DEFAULT_DB
+from .config import load_settings
 from .formatting import format_changes, format_latest
 from .store import OddsStore
 
 
 def main(argv: list[str] | None = None) -> int:
     parser = argparse.ArgumentParser(description="Telegram bot for stored Singapore Pools odds trends")
-    parser.add_argument("--db", default=DEFAULT_DB, type=Path)
-    parser.add_argument("--token", default=os.environ.get("TELEGRAM_BOT_TOKEN"))
+    parser.add_argument("--db", default=None, type=Path)
+    parser.add_argument("--env-file", type=Path, help="Optional .env file to load, e.g. C:\\Code\\goalsbot\\.env")
+    parser.add_argument("--token", default=None)
     args = parser.parse_args(argv)
+    settings = load_settings(
+        args.env_file,
+        {
+            "DATABASE_PATH": str(args.db) if args.db else None,
+            "TELEGRAM_BOT_TOKEN": args.token,
+        },
+    )
 
-    if not args.token:
+    if not settings.telegram_bot_token:
         raise SystemExit("Missing Telegram token. Set TELEGRAM_BOT_TOKEN or pass --token.")
 
     try:
@@ -24,7 +33,7 @@ def main(argv: list[str] | None = None) -> int:
     except ImportError as exc:
         raise SystemExit("python-telegram-bot is not installed. Run: python -m pip install -r requirements.txt") from exc
 
-    store = OddsStore(args.db)
+    store = OddsStore(settings.database_path)
 
     async def start(update: Update, context: ContextTypes.DEFAULT_TYPE) -> None:
         await update.message.reply_text(
@@ -49,14 +58,18 @@ def main(argv: list[str] | None = None) -> int:
             return
         await update.message.reply_text(format_changes(store.change_for_match(match)))
 
-    app = Application.builder().token(args.token).build()
+    app = Application.builder().token(settings.telegram_bot_token).build()
     app.add_handler(CommandHandler("start", start))
     app.add_handler(CommandHandler("odds", odds))
     app.add_handler(CommandHandler("change", change))
-    app.run_polling()
+    logging.getLogger("telegram").setLevel(logging.CRITICAL)
+    logging.getLogger("httpx").setLevel(logging.CRITICAL)
+    try:
+        app.run_polling()
+    except Exception as exc:
+        raise SystemExit(f"Telegram bot failed to start: {exc.__class__.__name__}. Check network access and bot token.") from exc
     return 0
 
 
 if __name__ == "__main__":
     raise SystemExit(main())
-
